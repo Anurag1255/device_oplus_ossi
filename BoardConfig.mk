@@ -120,7 +120,8 @@ BOARD_AVB_VENDOR_BOOT_ROLLBACK_INDEX_LOCATION := 1
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
 
 # Inherit the proprietary files
-include vendor/oplus/ossi/BoardConfigVendor.mk
+-include vendor/oplus/ossi/BoardConfigVendor.mk
+
 
 # OrangeFox / TWRP Recovery & Decryption Flags
 ALLOW_MISSING_DEPENDENCIES := true

@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-22.04
 
     env:
-      GIT_TERMINAL_PROMPT: 0
+      GIT_TERMINAL_PROMPT: "0"
+      GIT_ASKPASS: "/bin/true"
 
     steps:
     - name: Checkout Device Tree
@@ -19,12 +20,8 @@ jobs:
 
     - name: Clean up Runner Disk Space
       run: |
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /usr/local/lib/android
-        sudo rm -rf /opt/ghc
-        sudo rm -rf /usr/local/share/boost
+        sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost
         sudo apt-get clean
-        echo "Disk space after cleanup:"
         df -h
 
     - name: Install Build Dependencies
@@ -38,21 +35,26 @@ jobs:
           libssl-dev libxml2 lzop pngcrush rsync schedtool squashfs-tools \
           python3 python-is-python3
 
-    - name: Install repo tool (latest from Google)
+    - name: Install latest repo tool
       run: |
         mkdir -p ~/.local/bin
-        curl -s https://storage.googleapis.com/git-repo-downloads/repo -o ~/.local/bin/repo
+        curl -fsSL https://storage.googleapis.com/git-repo-downloads/repo -o ~/.local/bin/repo
         chmod a+x ~/.local/bin/repo
         echo "$HOME/.local/bin" >> $GITHUB_PATH
-        ~/.local/bin/repo --version
+
+    - name: Configure Git for anonymous GitLab access
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git config --global color.ui false
+        git config --global http.emptyAuth true
+        git config --global http.version HTTP/1.1
+        git config --global credential.helper ""
 
     - name: Initialize OrangeFox Manifest
       run: |
         mkdir -p ~/fox_12.1
         cd ~/fox_12.1
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git config --global color.ui false
         repo init \
           -u https://gitlab.com/OrangeFox/Manifest.git \
           -b fox_12.1 \

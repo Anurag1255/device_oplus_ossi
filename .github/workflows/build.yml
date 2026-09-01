@@ -44,7 +44,6 @@ jobs:
         git config --global user.email "actions@github.com"
         git config --global color.ui false
 
-    # Use GitHub-hosted TWRP manifest — no authentication needed
     - name: Initialize TWRP 12.1 Manifest
       run: |
         mkdir -p ~/fox_12.1
@@ -66,26 +65,23 @@ jobs:
           --optimized-fetch \
           --prune
 
-    # Download OrangeFox repos as zip archives — bypasses GitLab git auth entirely
-    - name: Download OrangeFox vendor/fox
+    - name: Download OrangeFox vendor/fox from GitHub Mirror
       run: |
-        wget -q \
-          "https://gitlab.com/OrangeFox/vendor/fox/-/archive/fox_12.1/fox-fox_12.1.zip" \
-          -O /tmp/fox_vendor.zip
+        wget -q "https://codeload.github.com/OrangeFox-mirror/vendor-recovery/zip/refs/heads/fox_12.1" -O /tmp/fox_vendor.zip
         unzip -q /tmp/fox_vendor.zip -d /tmp/
-        mv /tmp/fox-fox_12.1 ~/fox_12.1/vendor/fox
-        rm -f /tmp/fox_vendor.zip
+        mkdir -p ~/fox_12.1/vendor/fox
+        cp -r /tmp/vendor-recovery-fox_12.1/* ~/fox_12.1/vendor/fox/
+        rm -rf /tmp/fox_vendor.zip /tmp/vendor-recovery-fox_12.1
         echo "vendor/fox ready."
 
-    - name: Download OrangeFox bootable/recovery
+    - name: Download OrangeFox bootable/recovery from GitHub Mirror
       run: |
         rm -rf ~/fox_12.1/bootable/recovery
-        wget -q \
-          "https://gitlab.com/OrangeFox/bootable/recovery/-/archive/fox_12.1/recovery-fox_12.1.zip" \
-          -O /tmp/fox_recovery.zip
+        wget -q "https://codeload.github.com/OrangeFox-mirror/bootable-recovery/zip/refs/heads/fox_12.1" -O /tmp/fox_recovery.zip
         unzip -q /tmp/fox_recovery.zip -d /tmp/
-        mv /tmp/recovery-fox_12.1 ~/fox_12.1/bootable/recovery
-        rm -f /tmp/fox_recovery.zip
+        mkdir -p ~/fox_12.1/bootable/recovery
+        cp -r /tmp/bootable-recovery-fox_12.1/* ~/fox_12.1/bootable/recovery/
+        rm -rf /tmp/fox_recovery.zip /tmp/bootable-recovery-fox_12.1
         echo "bootable/recovery ready."
 
     - name: Setup Device Tree

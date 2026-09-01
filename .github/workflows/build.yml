@@ -10,6 +10,9 @@ jobs:
     name: Build OrangeFox Recovery
     runs-on: ubuntu-22.04
 
+    env:
+      GIT_TERMINAL_PROMPT: 0
+
     steps:
     - name: Checkout Device Tree
       uses: actions/checkout@v4
@@ -33,7 +36,15 @@ jobs:
           bc bison build-essential ccache curl flex git gnupg gperf \
           imagemagick liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev \
           libssl-dev libxml2 lzop pngcrush rsync schedtool squashfs-tools \
-          python3 python-is-python3 repo
+          python3 python-is-python3
+
+    - name: Install repo tool (latest from Google)
+      run: |
+        mkdir -p ~/.local/bin
+        curl -s https://storage.googleapis.com/git-repo-downloads/repo -o ~/.local/bin/repo
+        chmod a+x ~/.local/bin/repo
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        ~/.local/bin/repo --version
 
     - name: Initialize OrangeFox Manifest
       run: |
@@ -41,12 +52,23 @@ jobs:
         cd ~/fox_12.1
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        repo init -u https://gitlab.com/OrangeFox/Manifest.git -b fox_12.1 --depth=1
+        git config --global color.ui false
+        repo init \
+          -u https://gitlab.com/OrangeFox/Manifest.git \
+          -b fox_12.1 \
+          --depth=1 \
+          --no-clone-bundle \
+          --no-tags
 
     - name: Sync Recovery Source Code
       run: |
         cd ~/fox_12.1
-        repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+        repo sync -c -j$(nproc --all) \
+          --force-sync \
+          --no-clone-bundle \
+          --no-tags \
+          --optimized-fetch \
+          --prune
 
     - name: Setup Device Tree
       run: |
@@ -64,6 +86,7 @@ jobs:
         mka recoveryimage -j$(nproc --all) || mka vendorbootimage -j$(nproc --all)
 
     - name: Upload Recovery Artifacts
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: OrangeFox_Recovery_ossi

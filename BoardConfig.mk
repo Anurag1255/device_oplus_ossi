@@ -17,7 +17,7 @@ AB_OTA_PARTITIONS += \
     vbmeta_vendor \
     vendor_dlkm \
     system \
-    odm_dlkm \
+    odm_dlkm
 BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
 BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 

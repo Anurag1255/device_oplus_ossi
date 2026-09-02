@@ -101,7 +101,7 @@ jobs:
         export LC_ALL="C"
         source build/envsetup.sh
         lunch fox_ossi-eng
-        mka vendorbootimage -j$(nproc --all) || mka bootimage -j$(nproc --all) || mka recoveryimage -j$(nproc --all)
+        mka vendorbootimage -j$(nproc --all)
         echo "=== Output Directory Files ==="
         ls -la out/target/product/ossi/ || true
 

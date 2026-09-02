@@ -79,7 +79,6 @@ BOARD_OPLUS_DYNAMIC_PARTITIONS_PARTITION_LIST := \
     odm \
     product \
     vendor \
-    system_dlkm \
     system_ext \
     vendor_dlkm \
     system \

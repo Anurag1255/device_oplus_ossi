@@ -25,3 +25,5 @@ PRODUCT_GMS_CLIENTID_BASE := android-oneplus
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.orangefox.target=ossi \
     ro.orangefox.maintainer=Antigravity
+
+PRODUCT_BUILD_VENDOR_BOOT_IMAGE := true

@@ -94,6 +94,9 @@ jobs:
         cd ~/fox_12.1
         export ALLOW_MISSING_DEPENDENCIES=true
         export FOX_BUILD_TYPE="Unofficial"
+        export FOX_AB_DEVICE=1
+        export FOX_VIRTUAL_AB_DEVICE=1
+        export TW_DEFAULT_LANGUAGE="en"
         export LC_ALL="C"
         source build/envsetup.sh
         lunch fox_ossi-eng

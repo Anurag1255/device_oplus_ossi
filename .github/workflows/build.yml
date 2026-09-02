@@ -96,11 +96,12 @@ jobs:
         export FOX_BUILD_TYPE="Unofficial"
         export FOX_AB_DEVICE=1
         export FOX_VIRTUAL_AB_DEVICE=1
+        export FOX_VENDOR_BOOT_RECOVERY=1
         export TW_DEFAULT_LANGUAGE="en"
         export LC_ALL="C"
         source build/envsetup.sh
         lunch fox_ossi-eng
-        mka recoveryimage -j$(nproc --all) || mka bootimage -j$(nproc --all) || mka vendorbootimage -j$(nproc --all)
+        mka vendorbootimage -j$(nproc --all) || mka bootimage -j$(nproc --all) || mka recoveryimage -j$(nproc --all)
         echo "=== Output Directory Files ==="
         ls -la out/target/product/ossi/ || true
 
@@ -112,3 +113,5 @@ jobs:
         path: |
           /home/runner/fox_12.1/out/target/product/ossi/*.zip
           /home/runner/fox_12.1/out/target/product/ossi/*.img
+          /home/runner/fox_12.1/out/target/product/ossi/vendor_boot.img
+          /home/runner/fox_12.1/out/target/product/ossi/boot.img

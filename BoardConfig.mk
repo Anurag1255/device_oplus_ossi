@@ -18,8 +18,8 @@ AB_OTA_PARTITIONS += \
     vendor_dlkm \
     system \
     odm_dlkm \
-    boot
-BOARD_USES_RECOVERY_AS_BOOT := true
+BOARD_MOVE_RECOVERY_RESOURCES_TO_VENDOR_BOOT := true
+BOARD_INCLUDE_RECOVERY_RAMDISK_IN_VENDOR_BOOT := true
 
 # Architecture
 TARGET_ARCH := arm64
@@ -151,4 +151,7 @@ OF_QUICK_BACKUP_LIST := /data;/boot;/vendor_boot;
 OF_USE_GREEN_LED := 0
 OF_MAINTAINER := Antigravity
 FOX_MAINTAINER := Antigravity
+FOX_VENDOR_BOOT_RECOVERY := 1
+FOX_VIRTUAL_AB_DEVICE := 1
+FOX_AB_DEVICE := 1
 
